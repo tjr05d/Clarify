@@ -38,10 +38,10 @@ const addResponseDiv = (document, selection) => {
   div.style.zIndex = '999999'
   div.style.width = '30%'
   div.style.height = '100%'
-  div.style.border = '2px solid gray'
+  div.style.border = '1px solid gray'
   div.style.backgroundColor = 'white'
 
-  AddTextToClarifyDiv('Clarify', div, '#98ff98', '50px')
+  AddTextToClarifyDiv('Clarify', div, '#98ff98', '30px')
   AddTextToClarifyDiv(selection, div, 'white')
 }
 
@@ -49,7 +49,7 @@ const AddTextToClarifyDiv = (text, parentDiv, color, height) =>{
   let promptDiv = document.createElement('div')
   promptDiv.id = 'prompt'
   promptDiv.style.width = '100%'
-  promptDiv.style.height = height
+  promptDiv.style.minHeight = height
   promptDiv.style.backgroundColor = color
   promptDiv.style.display = 'flex'
   promptDiv.style.justifyContent = 'center'
