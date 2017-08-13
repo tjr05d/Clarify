@@ -16,14 +16,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 const requestClarification = (url, selection) => {
   let xhr = new XMLHttpRequest();
   let apiEndPoint = 'http://localhost:3000/clarifications'
+  let params = JSON.stringify({clarification: { url: url, selection: selection, state: 0}})
 
   xhr.open('POST', apiEndPoint, true)
-  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
   xhr.onload = () => {
     if (xhr.status === 200) relayClarificationData()
   }
 //this isn't correct, fix this in the am
-  xhr.send("clarification[url=" + url + "]clarification[&selection=" + selection + "]clarification[&state=0]");
+  xhr.send(params);
 }
 
 
