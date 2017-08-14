@@ -21,13 +21,17 @@ const requestClarification = (url, selection) => {
   xhr.open('POST', apiEndPoint, true)
   xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
   xhr.onload = () => {
-    if (xhr.status === 200) relayClarificationData()
+    if (xhr.status === 200) relayResponseData(xhr.responseText)
   }
 //this isn't correct, fix this in the am
   xhr.send(params);
 }
 
 
-const relayResponseData = () => {
-  console.log("request was returned")
+const relayResponseData = (responseJSON) => {
+  let parsedResponse = JSON.parse(responseJSON)
+  //relays the returned data to teh currently active tabs content script
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, { "message": "add_responses", "responses": responseJSON });
+  });
 }

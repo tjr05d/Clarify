@@ -9,6 +9,15 @@ chrome.runtime.onMessage.addListener( (request, sender, sendResponse) => {
   }
 );
 
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  let container = document.getElementById("container")
+  if (request.message === "add_responses") {
+    //LEAVING OFF HERE FOR THE NIGHT, NEED TO LOOP OVER THE RESPONSES AND APPEND THEM TO THE DIV
+  } 
+});
+
+
 //grab highlighted text from the DOM
 const getSelectedText = (window) => {
   let text =""
