@@ -7,7 +7,6 @@ chrome.browserAction.onClicked.addListener( (tab) => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === "new_clarity_request") {
-      console.log(request.data);
       requestClarification(request.url, request.data)
     }
   }
@@ -21,7 +20,7 @@ const requestClarification = (url, selection) => {
   xhr.open('POST', apiEndPoint, true)
   xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
   xhr.onload = () => {
-    if (xhr.status === 200) relayResponseData(xhr.responseText)
+    if (xhr.status === 200 || xhr.status === 201) relayResponseData(xhr.responseText)
   }
 //this isn't correct, fix this in the am
   xhr.send(params);
@@ -30,7 +29,7 @@ const requestClarification = (url, selection) => {
 
 const relayResponseData = (responseJSON) => {
   let parsedResponse = JSON.parse(responseJSON)
-  //relays the returned data to teh currently active tabs content script
+  //relays the returned data to the currently active tabs content script
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, { "message": "add_responses", "responses": responseJSON });
   });

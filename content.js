@@ -13,7 +13,17 @@ chrome.runtime.onMessage.addListener( (request, sender, sendResponse) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let container = document.getElementById("container")
   if (request.message === "add_responses") {
-    //LEAVING OFF HERE FOR THE NIGHT, NEED TO LOOP OVER THE RESPONSES AND APPEND THEM TO THE DIV
+    let responses = JSON.parse(request.responses)
+    console.log(responses)
+    if(responses.length === 0){
+      console.log("if")
+      addLoadingGif()
+    } else {
+      for(let response of responses){
+        console.log("else")
+        appendResponseToContainer(response.response_text) 
+      }
+    }
   } 
 });
 
@@ -49,21 +59,43 @@ const addResponseDiv = (document, selection) => {
   div.style.height = '100%'
   div.style.border = '1px solid gray'
   div.style.backgroundColor = 'white'
+  div.display = 'flex'
+  div.flexDirection = 'column' 
 
-  AddTextToClarifyDiv('Clarify', div, '#98ff98', '30px')
+  AddTextToClarifyDiv('Clarify', div, '#42c5f4', '30px')
   AddTextToClarifyDiv(selection, div, 'white')
 }
 
-const AddTextToClarifyDiv = (text, parentDiv, color, height) =>{
+const AddTextToClarifyDiv = (text, parentDiv, color, height) => {
   let promptDiv = document.createElement('div')
   promptDiv.id = 'prompt'
   promptDiv.style.width = '100%'
   promptDiv.style.minHeight = height
   promptDiv.style.backgroundColor = color
   promptDiv.style.display = 'flex'
+  promptDiv.style.flex = '1'
   promptDiv.style.justifyContent = 'center'
   promptDiv.style.padding = '18px'
   promptDiv.style.borderBottom = '1px solid lightgrey'
   promptDiv.innerText = text
   parentDiv.appendChild(promptDiv)
+}
+
+const appendResponseToContainer = (responseText) => {
+  let container = document.getElementById('container')
+
+  let responseDiv = document.createElement('div')
+  responseDiv.innerHTML = responseText
+
+  container.appendChild(responseDiv)
+}
+
+const addLoadingGif = () => {
+  let container = document.getElementById('container')
+  
+  let loadingGif = new Image(100, 100)
+  let imgURL = chrome.extension.getURL('loading.gif');
+  loadingGif.src = imgURL
+  loadingGif.style.marginTop = '200px'
+  container.appendChild(loadingGif)
 }
